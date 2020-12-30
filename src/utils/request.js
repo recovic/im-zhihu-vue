@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const request = axios.create({
-    baseURL: "http://localhost:8080/",
+    baseURL: process.env.VUE_APP_SERVER_ADDR,
     timeout: 1000 * 5,
     headers: { 'Authorization': 'Bearer ' + localStorage.token }
 });
