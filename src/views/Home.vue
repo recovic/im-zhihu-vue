@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <b-row class="mt-5">
+    <b-row class="mt-3 mb-3">
       <b-col cols="8">
 
         <b-card no-body>
@@ -56,7 +56,7 @@ export default {
     methods: {
         getQuestions() {
             let ctx = this;
-            request.get('/question?cursor=' + this.cursor + '&size=10&orderby=' + ctx.order)
+            request.get('/question?cursor=' + this.cursor + '&size=15&orderby=' + ctx.order)
                 .then((res) => {
                     if (res.data.code === 0) {
                         ctx.cursor = res.data.data.next_cursor;

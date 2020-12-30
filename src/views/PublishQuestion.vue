@@ -1,6 +1,6 @@
 <template>
   <div class="publishQuestion">
-    <b-row class="mt-5">
+    <b-row class="mt-3 mt-3">
       <b-col>
         <b-card>
           <b-form>
@@ -71,13 +71,15 @@ export default {
             request.post('/question', ctx.question)
                 .then(function (res) {
                     if (res.data.code === 0) {
+                        //inform.toastSuccess(ctx, '发布成功', res.data.message);
+                        //ctx.$router.replace({name: "Home"});
                         window.location = '/';
                     } else {
-                        inform.toastDanger(ctx, '发布失败', res.data.message)
+                        inform.toastDanger(ctx, '发布失败', res.data.message);
                     }
                 })
                 .catch((err) => {
-                    inform.toastDanger(ctx, '请求错误', err.response.data.message)
+                    inform.toastDanger(ctx, '请求错误', err.response.data.message);
                 });
         }
     },
