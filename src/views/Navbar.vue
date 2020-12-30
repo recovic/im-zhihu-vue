@@ -36,6 +36,7 @@
 
             <b-nav-item v-if="!isLogged()" href="/register">注册</b-nav-item>
             <b-nav-item v-if="!isLogged()" href="/login">登录</b-nav-item>
+            <b-nav-item v-if="isLogged()" href="/publishQuestion">发布问题</b-nav-item>
             <b-nav-item v-if="isLogged()" href="#">个人中心</b-nav-item>
           </b-navbar-nav>
         </b-collapse>
@@ -49,7 +50,7 @@
 export default {
     methods: {
         isLogged() {
-            return this.$store.state.logged;
+            return localStorage.logged;
         }
     }
 }

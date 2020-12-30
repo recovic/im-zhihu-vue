@@ -13,7 +13,7 @@
           <b-list-group flush>
             <b-list-group-item href="#" v-for="question in questions" v-bind:key="question.id">
               <h5>{{ question.title }}</h5>
-              Some content.
+              {{ question.content }}
             </b-list-group-item>
             <b-button v-if="hasMore" variant="outline-primary" @click="getQuestions">加载更多</b-button>
           </b-list-group>

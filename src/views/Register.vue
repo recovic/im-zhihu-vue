@@ -78,7 +78,6 @@
 </template>
 
 <script>
-import storageService from "@/service/storageService";
 import request from "@/utils/request";
 import inform from "@/utils/inform";
 
@@ -103,9 +102,9 @@ export default {
             request.post('/user/register', ctx.user)
                 .then(function (res) {
                     if (res.data.code === 0) {
-                        storageService.set(storageService.USER_TOKEN, res.data.data.token);
-                        this.$store.commit('setLogged');
-                        ctx.$router.replace({name: "Home"});
+                        localStorage.token = res.data.data.token;
+                        localStorage.logged = true;
+                        window.location = '/';
                     } else {
                         inform.toastDanger(ctx, '注册失败', res.data.message)
                     }

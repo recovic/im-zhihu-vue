@@ -1,34 +1,43 @@
 <template>
-  <div class="login">
+  <div class="publishQuestion">
     <b-row class="mt-5">
-      <b-col md="8" offset-md="2" lg="6" offset-lg="3">
+      <b-col>
         <b-card>
           <b-form>
             <b-form-group>
-              <h2>登录</h2>
+              <h2>发布问题</h2>
             </b-form-group>
 
             <b-form-group>
               <b-form-input
-                  v-model="user.email"
-                  type="email"
-                  placeholder="邮箱"
+                  v-model="question.title"
+                  type="text"
+                  placeholder="标题"
                   required
               ></b-form-input>
             </b-form-group>
 
             <b-form-group>
+              <b-form-textarea
+                  id="textarea"
+                  v-model="question.content"
+                  placeholder="问题详情"
+                  rows="10"
+                  max-rows="20"
+              ></b-form-textarea>
+            </b-form-group>
+
+            <b-form-group>
               <b-form-input
-                  v-model="user.password"
-                  type="password"
-                  placeholder="密码"
-                  required
+                  v-model="question.tag"
+                  type="text"
+                  placeholder="标签"
               ></b-form-input>
             </b-form-group>
 
             <b-form-group>
-              <b-button variant="outline-primary" @click="login" block
-              >登录
+              <b-button variant="outline-primary" @click="publish"
+              >发布
               </b-button
               >
             </b-form-group>
@@ -40,42 +49,40 @@
 </template>
 
 <script>
+
+
 import request from "@/utils/request";
 import inform from "@/utils/inform";
 
 export default {
     data() {
         return {
-            user: {
-                email: "",
-                password: ""
+            question: {
+                title: '',
+                content: '',
+                tag: ''
             }
         };
     },
 
     methods: {
-        login() {
+        publish() {
             let ctx = this;
-            // TODO: 验证数据
-            // 请求
-            request.post('/user/login', ctx.user)
+            request.post('/question', ctx.question)
                 .then(function (res) {
                     if (res.data.code === 0) {
-                        localStorage.token = res.data.data.token;
-                        localStorage.logged = true;
                         window.location = '/';
                     } else {
-                        inform.toastDanger(ctx, '登录失败', res.data.message)
+                        inform.toastDanger(ctx, '发布失败', res.data.message)
                     }
                 })
                 .catch((err) => {
                     inform.toastDanger(ctx, '请求错误', err.response.data.message)
                 });
         }
-    }
-}
+    },
+};
 </script>
 
-<style scoped>
-
+<style>
 </style>
