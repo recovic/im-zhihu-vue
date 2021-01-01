@@ -1,2 +1,8 @@
 @import 'node_modules/bootstrap/scss/bootstrap.scss';
 @import 'node_modules/bootstrap-vue/src/index.scss';
+
+.text-gray {
+  color: gray;
+  font-size: 14px;
+  margin-top: 6px;
+}

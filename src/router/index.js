@@ -32,6 +32,11 @@ const routes = [
         path: '/publishQuestion',
         name: 'PublishQuestion',
         component: () => import('../views/PublishQuestion.vue')
+    },
+    {
+        path: '/question/:id',
+        name: 'Question',
+        component: () => import('../views/Question.vue')
     }
 
 ]

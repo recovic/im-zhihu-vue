@@ -11,9 +11,13 @@
             </b-nav>
           </b-card-header>
           <b-list-group flush>
-            <b-list-group-item href="#" v-for="question in questions" v-bind:key="question.id">
+            <b-list-group-item :href="'/question/' + question.id" v-for="question in questions"
+                               v-bind:key="question.id">
               <h5>{{ question.title }}</h5>
               {{ question.content }}
+              <div class="text-gray">
+                {{ question.view_count }} 次浏览・{{ question.answer_count }} 条回答
+              </div>
             </b-list-group-item>
             <b-button v-if="hasMore" variant="outline-primary" @click="getQuestions">加载更多</b-button>
           </b-list-group>

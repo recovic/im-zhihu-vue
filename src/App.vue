@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <navbar/>
-    <b-container>
+    <b-container >
       <router-view/>
     </b-container>
   </div>
@@ -18,5 +18,6 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style>
+
 </style>
