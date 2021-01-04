@@ -29,8 +29,8 @@
                 </b-col>
 
                 <b-col>
-                  <b-button variant="outline-primary" @click="sendVrfCode" block
-                  >发送验证码
+                  <b-button :disabled="disabled" variant="outline-primary" @click="sendVrfCode" block
+                  >{{ buttonText }}
                   </b-button
                   >
                 </b-col>
@@ -91,6 +91,8 @@ export default {
                 password: "",
                 re_password: "",
             },
+            disabled: false,
+            buttonText: "发送验证码"
         };
     },
 
@@ -116,6 +118,11 @@ export default {
 
         sendVrfCode() {
             let ctx = this;
+            this.disabled = true;
+            this.buttonText = "重新发送";
+            setTimeout(function () {
+                ctx.disabled = false;
+            }, 60 * 1000);
             request
                 .get("/user/verify?email=" + ctx.user.email)
                 .then(function (res) {
