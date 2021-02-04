@@ -42,6 +42,7 @@
 <script>
 import request from "@/utils/request";
 import inform from "@/utils/inform";
+import storage from "@/utils/storage";
 
 export default {
     data() {
@@ -61,8 +62,9 @@ export default {
             request.post('/user/login', ctx.user)
                 .then(function (res) {
                     if (res.data.code === 0) {
-                        localStorage.token = res.data.data.token;
-                        localStorage.logged = true;
+                        storage.set(storage.TOKEN, res.data.data.token);
+                        storage.set(storage.ID, res.data.data.id);
+                        storage.set(storage.LOGGED, true);
                         window.location = '/';
                     } else {
                         inform.toastDanger(ctx, '登录失败', res.data.message)

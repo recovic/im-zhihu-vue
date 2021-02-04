@@ -38,7 +38,7 @@
             <b-nav-item v-if="!isLogged()" href="/login">登录</b-nav-item>
             <b-nav-item v-if="isLogged()" href="/publishQuestion">发布问题</b-nav-item>
             <b-nav-item-dropdown v-if="isLogged()" text="我的" right>
-              <b-dropdown-item href="#">个人中心</b-dropdown-item>
+              <b-dropdown-item href="/profile">个人中心</b-dropdown-item>
               <b-dropdown-item @click="logout">退出登录</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
