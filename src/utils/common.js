@@ -23,7 +23,15 @@ function getFileBase64(obj, fnc){
     }
 }
 
+function showAvatarUrl(url) {
+    if (url == null || url == "") {
+        return "@/assets/noname-avatar.jpg";
+    }
+    return url;
+}
+
 export default {
     PIC_SERVER,
-    getFileBase64
+    getFileBase64,
+    showAvatarUrl
 }

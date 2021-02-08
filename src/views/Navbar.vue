@@ -51,6 +51,11 @@
 <script>
 
 export default {
+    data() {
+        return {
+
+        }
+    },
     methods: {
         isLogged() {
             return localStorage.logged;
