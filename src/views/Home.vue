@@ -7,12 +7,12 @@
           <b-card-header header-tag="nav">
             <b-nav card-header tabs>
               <b-nav-item v-bind:active="active.newest" @click="turnNew">最新</b-nav-item>
-              <b-nav-item v-bind:active="active.hot" @click="turnHot">最多浏览</b-nav-item>
-              <b-nav-item v-bind:active="active.top" @click="turnTop">热榜</b-nav-item>
+              <b-nav-item v-bind:active="active.view" @click="turnView">最多浏览</b-nav-item>
+              <b-nav-item v-bind:active="active.hot" @click="turnHot">热榜</b-nav-item>
             </b-nav>
           </b-card-header>
 
-          <b-list-group v-if="active.newest || active.hot" flush>
+          <b-list-group v-if="active.newest || active.view" flush>
             <b-list-group-item :href="'/question/' + question.id" v-for="question in questions"
                                v-bind:key="question.id">
               <h5>{{ question.title }}</h5>
@@ -24,16 +24,16 @@
             <b-button v-if="hasMore" variant="outline-primary" @click="getQuestions">加载更多</b-button>
           </b-list-group>
 
-          <b-list-group v-if="active.top" flush>
+          <b-list-group v-if="active.hot" flush>
             <b-list-group-item :href="'/question/' + question.id" v-for="question in questions"
                                v-bind:key="question.id">
               <h5>{{ question.title }}</h5>
               <div v-if="question.answer != null && question.answer.id != 0">
-                <img v-if="question.answer.creator.avatar_url != ''" v-bind:src="question.answer.creator.avatar_url" height="25px" width="25px">
-                <img v-if="question.answer.creator.avatar_url == ''" src="../assets/noname-avatar.jpg" height="25px" width="25px">
-                {{question.answer.creator.name}}
+                <img v-bind:src="common.showAvatarUrl(question.answer.creator.avatar_url)" height="25px" width="25px"
+                     rounded>
+                {{ question.answer.creator.name }}
                 <br>
-                {{question.answer.content}}
+                {{ question.answer.content }}
                 <div class="text-gray">
                   {{ question.answer.upvote_count }} 赞同
                 </div>
@@ -69,8 +69,8 @@ export default {
         return {
             active: {
                 newest: true,
-                hot: false,
-                top: false
+                view: false,
+                hot: false
             },
             questions: [],
             cursor: '',
@@ -81,7 +81,18 @@ export default {
     },
 
     mounted: function () {
-        this.getQuestions();
+        let tab = this.$route.query.tab;
+        switch (tab) {
+            case 'view':
+                this.turnView();
+                break;
+            case 'hot':
+                this.turnHot();
+                break;
+            default:
+                this.turnNew();
+                break;
+        }
     },
 
     methods: {
@@ -96,21 +107,24 @@ export default {
 
         turnNew() {
             this.clear();
+            common.setUrlQuery(this, 'tab', '');
             this.active.newest = true;
             this.order = 'time';
             this.getQuestions();
         },
 
-        turnHot() {
+        turnView() {
             this.clear();
-            this.active.hot = true;
+            common.setUrlQuery(this, 'tab', 'view');
+            this.active.view = true;
             this.order = 'heat';
             this.getQuestions();
         },
 
-        turnTop() {
+        turnHot() {
             this.clear();
-            this.active.top = true;
+            common.setUrlQuery(this, 'tab', 'hot');
+            this.active.hot = true;
             this.getHot();
         },
 

@@ -1,7 +1,7 @@
 <template>
   <div class="mt-3 mb-3">
     <b-card>
-      <b-img v-bind:src="profile.avatar_url" height="80px" width="80px" rounded></b-img>
+      <b-img v-bind:src="common.showAvatarUrl(profile.avatar_url)" height="80px" width="80px" rounded></b-img>
       <b-scan class="ml-3" style="font-size: 26px; font-weight: bold;">{{ profile.name }}</b-scan>
       <b-button style="float: right" href="/update_profile" variant="outline-primary">编辑资料</b-button>
     </b-card>
@@ -44,6 +44,7 @@
 import request from "@/utils/request";
 import storage from "@/utils/storage";
 import inform from "@/utils/inform";
+import common from "@/utils/common";
 
 export default {
     name: "Profile",
@@ -58,7 +59,8 @@ export default {
                 gender: '',
                 avatar_url: '',
                 description: ''
-            }
+            },
+            common: common
         }
     },
     mounted() {
