@@ -20,6 +20,9 @@
             <b-form-group label="头像：">
               <b-img v-bind:src="avatar" height="100px" width="100px" rounded alt="头像"></b-img>
               <b-form-file v-model="file" class="mt-3" plain></b-form-file>
+              <b-button variant="outline-primary" @click="uploadImg"
+              >上传
+              </b-button>
             </b-form-group>
 
             <b-form-group label="性别：">
@@ -100,7 +103,7 @@ export default {
                     inform.toastDanger(ctx, '请求错误', err.response.data.message)
                 });
         },
-        upload() {
+        uploadImg() {
             let ctx = this;
             common.getFileBase64(this.file, async function (dat) {
                 if (dat != null && dat != "" && ctx.file != null) {
@@ -108,32 +111,36 @@ export default {
                         .then((res) => {
                             if (res.data.data.err_code === 0) {
                                 ctx.profile.avatar_url = res.data.data.url;
+                                alert("上传图片成功");
                                 console.log(res.data);
                             } else {
-                                inform.toastDanger(ctx, "上传图片失败", res.data.data.err_msg);
+                                alert("上传图片失败：" + res.data.data.err_msg);
                                 console.log(res.data);
                             }
                         })
                         .catch((err) => {
-                            inform.toastDanger(ctx, "上传图片失败", err.response.data.msg);
+                            alert("上传图片失败" + err.response.data.msg);
                             console.log(err.response.data)
                         });
                 }
-                if (typeof (ctx.profile.gender) == 'string') {
-                    ctx.profile.gender = parseInt(ctx.profile.gender);
-                }
-                request.put('/user/profile', ctx.profile)
-                    .then((res) => {
-                        if (res.data.code === 0) {
-                            window.location = '/';
-                        } else {
-                            inform.toastDanger(ctx, "更新失败", res.data.message);
-                        }
-                    })
-                    .catch((err) => {
-                        inform.toastDanger(ctx, '更新错误', err.response.data.message)
-                    });
             });
+        },
+        upload() {
+            let ctx = this;
+            if (typeof (ctx.profile.gender) == 'string') {
+                ctx.profile.gender = parseInt(ctx.profile.gender);
+            }
+            request.put('/user/profile', ctx.profile)
+                .then((res) => {
+                    if (res.data.code === 0) {
+                        window.location = '/';
+                    } else {
+                        inform.toastDanger(ctx, "更新失败", res.data.message);
+                    }
+                })
+                .catch((err) => {
+                    inform.toastDanger(ctx, '更新错误', err.response.data.message)
+                });
         }
     }
 }
