@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import storage from "@/utils/storage";
 
 export default {
     data() {
@@ -61,8 +62,9 @@ export default {
             return localStorage.logged;
         },
         logout() {
-            localStorage.removeItem('logged');
-            localStorage.removeItem('token');
+            storage.remove(storage.LOGGED);
+            storage.remove(storage.TOKEN);
+            storage.remove(storage.ID);
             window.location = '/';
         }
     }
