@@ -39,6 +39,11 @@ const routes = [
         component: () => import('../views/Question.vue')
     },
     {
+        path: '/publishAnswer/:id',
+        name: 'PublishAnswer',
+        component: () => import('../views/PublishAnswer.vue')
+    },
+    {
         path: '/update_profile',
         name: 'UpdateProfile',
         component: () => import('../views/UpdateProfile.vue')

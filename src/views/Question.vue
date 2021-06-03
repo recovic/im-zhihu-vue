@@ -5,6 +5,8 @@
         <b-card>
           <h3>{{ question.title }}</h3>
           {{ question.content }}
+          <hr>
+          <b-link :href="'/publishAnswer/'+qid">添加回答</b-link>
         </b-card>
 
         <b-card no-body class="mt-3">
