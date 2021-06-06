@@ -6,7 +6,11 @@
           <h3>{{ question.title }}</h3>
           {{ question.content }}
           <hr>
-          <b-link class="ml-4" :href="'/publishAnswer/'+qid">添加回答</b-link>
+          <b-link :href="'/publishAnswer/'+qid">添加回答</b-link>
+          <b-link class="ml-4" v-if="question.creator.id == storage.get(storage.ID)"
+                  :href="'/modifyQuestion/'+qid">修改问题</b-link>
+          <b-link class="ml-4" v-if="question.creator.id == storage.get(storage.ID)"
+                  @click="removeQuestion">删除问题</b-link>
         </b-card>
 
         <b-card no-body class="mt-3">
@@ -14,12 +18,19 @@
             <b-list-group-item>
               {{ question.answer_count }} 条回答
             </b-list-group-item>
-            <b-list-group-item href="#" v-for="answer in answers"
+            <b-list-group-item v-for="answer in answers"
                                v-bind:key="answer.id">
               {{ answer.content }}
               <hr>
-              <b-button variant="outline-primary" size="sm" :pressed="answer.upPressed" @click="upvote(answer)"><b-icon icon="caret-up-fill"></b-icon>{{ answer.upvote_count }} 赞同</b-button>
-              <b-button class="ml-2" variant="outline-primary" size="sm" :pressed="answer.downPressed" @click="downvote(answer)"><b-icon icon="caret-down-fill"></b-icon></b-button>
+              <b-button variant="outline-primary" size="sm" :pressed="answer.upPressed"
+                        @click="upvote(answer)"><b-icon
+                  icon="caret-up-fill"></b-icon>{{ answer.upvote_count }} 赞同</b-button>
+              <b-button class="ml-2" variant="outline-primary" size="sm" :pressed="answer.downPressed"
+                        @click="downvote(answer)"><b-icon icon="caret-down-fill"></b-icon></b-button>
+              <b-link class="float-right" v-if="answer.creator.id == storage.get(storage.ID)"
+                      @click="removeAnswer(answer.id)">删除回答</b-link>
+              <b-link class="mr-4 float-right" v-if="answer.creator.id == storage.get(storage.ID)"
+                      :href="'/modifyAnswer/'+answer.id">修改回答</b-link>
             </b-list-group-item>
             <b-button v-if="hasMore" variant="outline-primary" @click="getAnswers">加载更多</b-button>
           </b-list-group>
@@ -37,6 +48,8 @@
 
 <script>
 import request from "@/utils/request";
+import storage from "@/utils/storage";
+import inform from "@/utils/inform";
 
 export default {
     name: "Question",
@@ -47,7 +60,8 @@ export default {
             answers: [],
             cursor: '',
             order: 'time',
-            hasMore: true
+            hasMore: true,
+            storage: storage
         }
     },
     mounted: function () {
@@ -114,6 +128,38 @@ export default {
                 this.setVote(answer, 2);
             } else {
                 this.setVote(answer, 0);
+            }
+        },
+        removeQuestion() {
+            let _this = this;
+            if (confirm('确认要删除问题吗？')) {
+                request.delete('/question/' + _this.qid)
+                    .then(function (res) {
+                        if (res.data.code === 0) {
+                            window.location = '/';
+                        } else {
+                            inform.toastDanger(_this, '发布失败', res.data.message);
+                        }
+                    })
+                    .catch((err) => {
+                        inform.toastDanger(_this, '请求错误', err.response.data.message);
+                    });
+            }
+        },
+        removeAnswer(id) {
+            let _this = this;
+            if (confirm('确认要删除回答吗？')) {
+                request.delete('/answer/' + id)
+                    .then(function (res) {
+                        if (res.data.code === 0) {
+                            window.location = '/question/' + _this.qid;
+                        } else {
+                            inform.toastDanger(_this, '发布失败', res.data.message);
+                        }
+                    })
+                    .catch((err) => {
+                        inform.toastDanger(_this, '请求错误', err.response.data.message);
+                    });
             }
         }
     }

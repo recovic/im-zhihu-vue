@@ -34,6 +34,11 @@ const routes = [
         component: () => import('../views/PublishQuestion.vue')
     },
     {
+        path: '/modifyQuestion/:id',
+        name: 'ModifyQuestion',
+        component: () => import('../views/ModifyQuestion.vue')
+    },
+    {
         path: '/question/:id',
         name: 'Question',
         component: () => import('../views/Question.vue')
@@ -42,6 +47,11 @@ const routes = [
         path: '/publishAnswer/:id',
         name: 'PublishAnswer',
         component: () => import('../views/PublishAnswer.vue')
+    },
+    {
+        path: '/modifyAnswer/:id',
+        name: 'ModifyAnswer',
+        component: () => import('../views/ModifyAnswer.vue')
     },
     {
         path: '/update_profile',
